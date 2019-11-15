@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -20,7 +22,33 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'rk7e2-s(^nfn#%3u@+rq2q%rajy_*ts&$2bhx&i(=!@t(6^^7b'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',),
+    'EXCEPTION_HANDLER': 'pharma_admin.ExceptionHandler.custom_exception_handler',
+    'DEFAULT_RENDERER_CLASSES': (
+        'pharma_admin.JsonTemp.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+        },
+    },
+}
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': False,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=30),
 
+}
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -38,6 +66,10 @@ INSTALLED_APPS = [
     'db',
     'borrower',
     'investor',
+    'rest_framework',
+    'rest_framework_swagger',
+    'rest_framework.authtoken',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +102,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LenmoTest.wsgi.application'
-
+AUTH_USER_MODEL = 'db.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
