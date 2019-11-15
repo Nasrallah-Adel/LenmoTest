@@ -7,8 +7,9 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.hashers import make_password
 
-
 # Create your models here.
+from django.utils.timezone import now
+
 
 class AppUserManager(BaseUserManager):
     # date_of_birth, password=None):
@@ -87,9 +88,70 @@ class User(AbstractBaseUser, PermissionsMixin):
                             default=ACCOUNT_TYPE_BORROWER)
     gender = models.CharField(max_length=10, choices=GENDER_LIST,
                               default=MAIL_GENDER)
-
+    balance = models.PositiveIntegerField(default=0, null=False, blank=True)
     objects = AppUserManager()
     USERNAME_FIELD = 'email'
 
     def get_full_name(self):
         return '{}'.format(self.username)
+
+
+class Loan(models.Model):
+    LOAN_STATUS_WAITING = "WAITING"
+    LOAN_STATUS_FUNDED = "FUNDED"
+    LOAN_STATUS_COMPLETED = "COMPLETED"
+
+    LOAN_STATUS_LIST = ((LOAN_STATUS_FUNDED, LOAN_STATUS_FUNDED),
+                        (LOAN_STATUS_COMPLETED, LOAN_STATUS_COMPLETED),
+                        (LOAN_STATUS_WAITING, LOAN_STATUS_WAITING))
+
+    class Meta:
+        db_table = 'Loan'
+
+    id = models.BigAutoField(primary_key=True)
+    created_at = models.DateField(auto_created=True, default=now, blank=True)
+    updated_at = models.DateField(auto_now=True, null=True, blank=True)
+    amount = models.PositiveIntegerField(default=0, null=False, blank=True)
+    period = models.PositiveIntegerField(default=0, null=False, blank=True)
+    status = models.CharField(max_length=15, choices=LOAN_STATUS_LIST,
+                              default=LOAN_STATUS_WAITING)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+
+
+class LoanPayments(models.Model):
+    PAYMENT_STATUS_PAID = "PAID"
+    PAYMENT_STATUS_NOT_PAID = "NOT PAID"
+
+    PAYMENT_STATUS_LIST = ((PAYMENT_STATUS_PAID, PAYMENT_STATUS_PAID),
+                           (PAYMENT_STATUS_NOT_PAID, PAYMENT_STATUS_NOT_PAID),
+                           )
+
+    class Meta:
+        db_table = 'LoanPayments'
+
+    id = models.BigAutoField(primary_key=True)
+    amount = models.PositiveIntegerField(default=0, null=False, blank=True)
+    due_date = models.DateField(auto_created=True, default=now, blank=True)
+    status = models.CharField(max_length=15, choices=PAYMENT_STATUS_LIST,
+                              default=PAYMENT_STATUS_PAID)
+    loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
+
+
+class Offer(models.Model):
+    OFFER_STATUS_ACCEPTED = "ACCEPTED"
+    OFFER_STATUS_NOT_ACCEPTED = "NOT ACCEPTED"
+
+    OFFER_STATUS_LIST = ((OFFER_STATUS_ACCEPTED, OFFER_STATUS_ACCEPTED),
+                         (OFFER_STATUS_NOT_ACCEPTED, OFFER_STATUS_NOT_ACCEPTED),
+                         )
+
+    class Meta:
+        db_table = 'Offers'
+
+    id = models.BigAutoField(primary_key=True)
+    created_at = models.DateField(auto_created=True, default=now, blank=True)
+    loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
+    interest_rate = models.PositiveIntegerField(default=0, null=False, blank=True)
+
+    status = models.CharField(max_length=15, choices=OFFER_STATUS_LIST,
+                              default=OFFER_STATUS_NOT_ACCEPTED)
