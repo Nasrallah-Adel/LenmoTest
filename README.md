@@ -1,5 +1,6 @@
 # Lenmo-Test
-Use case
+Use case\
+\
 A Lenmo borrower would like to borrower $5,000.00 on paying them back on 6 months period. One of Lenmo investors has offered him 15% Annual Interest Rate. A $3.00 Lenmo fee will be added to the total loan amount to be paid by the investor.  
  
 Requirements:
