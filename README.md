@@ -13,3 +13,17 @@ Check if the investor has sufficient balance in their account before they fund t
 4-The loan will be funded successfully and the loan status will be Funded 
 5-The loan payments will be created with the monthly amount to be paid and its due date
 6-Once all the payments are successfully paid to the investor, the loan status will be Completed
+
+#*To run Project*
+##First
+install Docker on your machine you can follow the steps [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
+##Second 
+cd to folder of project 
+
+- cd LenmoTest
+-  docker-compose  up --build 
+
+if open project for first time use "*docker-compose  up --build*" , if you use it before without change the code or
+ setting of docker file
+ or docker-compose you can just use "*docker-compose  up*" 
+
