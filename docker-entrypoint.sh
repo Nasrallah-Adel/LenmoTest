@@ -8,6 +8,8 @@ sleep 10
 
 echo "Postgres DB is ready"
 
+echo "Collect statics"
+./manage.py collectstatic --no-input
 # create tables
 echo "Updating Database Tables"
 ./manage.py makemigrations

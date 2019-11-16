@@ -18,6 +18,7 @@ services:
     volumes:
       - Lenmo_run:/run/
       - ./nginx:/etc/nginx/conf.d
+      - ./static:/static
 
     ports:
       - "80:80"
@@ -39,6 +40,7 @@ services:
     volumes:
       - .:/opt/LenmoTest
       - Lenmo_run:/run/
+      - ./static:/static
     depends_on:
       - db
       - nginx
