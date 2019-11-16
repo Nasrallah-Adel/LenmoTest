@@ -1,6 +1,6 @@
 import jwt
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, GenericAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_jwt.serializers import jwt_payload_handler, JSONWebTokenSerializer
 
 from LenmoTest import settings
-from LenmoTest.serializers.user_serializer import UserSerializer
+from LenmoTest.serializers.user_serializer import UserSerializer, UserBalanceSerializer
 from db.models import User
 
 
@@ -62,3 +62,18 @@ class Register(CreateAPIView):
         token = create_token(user)
         data = {'object': UserSerializer(user, context={"request": request}).data, 'token': token}
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+class DepositMoney(AuthenticationMixin, UpdateAPIView):
+    serializer_class = UserBalanceSerializer
+    queryset = User.objects.all()
+    lookup_field = 'balance'
+
+    def put(self, request, *args, **kwargs):
+        return self.patch(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        amount = request.data['balance']
+        user = User.objects.get(id=request.user.id)
+        user.balance = user.balance + int(amount)
+        user.save()
+        return Response(data={'message': 'Your New Balance Is ' + str(user.balance)})

@@ -20,3 +20,14 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_password(self, password):
         if password:
             return make_password(password, salt='lenmo')
+
+
+class UserBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'balance')
+
+        read_only_fields = ('id',)
+
+
