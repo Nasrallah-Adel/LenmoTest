@@ -2,22 +2,37 @@ import datetime
 
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from LenmoTest.FINAL_VALUES import *
 from LenmoTest.serializers.loan_serializer import LoanSerializer
 from LenmoTest.serializers.offer_serializer import AcceptOfferSerializer
+from LenmoTest.serializers.user_serializer import UserBalanceSerializer
 from db.models import Loan, Offer, User, LenmonProfit, LoanPayments
 
 
+class IsBorrower(BasePermission):
+    """
+    Allows access only to Borrower  users.
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user.is_authenticated and request.user.type == User.ACCOUNT_TYPE_BORROWER)
+
+
 class AuthenticationMixin(object):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsBorrower,)
     authentication_classes = (JSONWebTokenAuthentication,)
 
 
 class LoanRequestCreate(AuthenticationMixin, CreateAPIView):
+    """
+you have two fields \n
+ 1 - amount : money you need for loan \n
+ 2 - period : related for number of month's you will pay back the loan amount
+    """
     serializer_class = LoanSerializer
 
     def perform_create(self, serializer):
@@ -95,3 +110,26 @@ class AcceptOffer(AuthenticationMixin, UpdateAPIView):
         for _ in range(loan.period):
             LoanPayments(offer=offer, loan=loan, amount=amount, due_date=due_date).save()
             due_date = due_date + datetime.timedelta(days=30)
+
+
+class DepositMoney(AuthenticationMixin, UpdateAPIView):
+    serializer_class = UserBalanceSerializer
+    queryset = User.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        return self.patch(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        amount = request.data['balance']
+        try:
+            user = User.objects.get(id=request.user.id)
+        except Exception as e:
+            return Response(data={'message': 'user not exist  ' + str(e)})
+        try:
+            user.balance = user.balance + int(amount)
+            user.save()
+        except Exception as e:
+            print(e)
+            return Response(data={'message': ' error :  ' + str(e)})
+
+        return Response(data={'message': 'Your New Balance Is ' + str(user.balance)})
