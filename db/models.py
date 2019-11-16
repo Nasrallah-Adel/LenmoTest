@@ -88,7 +88,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                             default=ACCOUNT_TYPE_BORROWER)
     gender = models.CharField(max_length=10, choices=GENDER_LIST,
                               default=MAIL_GENDER)
-    balance = models.PositiveIntegerField(default=0, null=False, blank=True)
+    balance = models.FloatField(default=0, null=False, blank=True)
     objects = AppUserManager()
     USERNAME_FIELD = 'email'
 

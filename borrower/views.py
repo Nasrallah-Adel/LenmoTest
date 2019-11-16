@@ -92,6 +92,6 @@ class AcceptOffer(AuthenticationMixin, UpdateAPIView):
         # today = today.strftime("%Y-%m-%d")
         due_date = today + datetime.timedelta(days=30)
 
-        for i in range(loan.period):
+        for _ in range(loan.period):
             LoanPayments(offer=offer, loan=loan, amount=amount, due_date=due_date).save()
             due_date = due_date + datetime.timedelta(days=30)
