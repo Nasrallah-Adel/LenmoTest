@@ -20,15 +20,32 @@ Check if the investor has sufficient balance in their account before they fund t
 ## First
 install Docker on your machine you can follow the steps [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
 
-##Second 
+## Second 
 
 
 cd to folder of project 
 
-- cd LenmoTest
--  docker-compose  up --build 
+- ``` cd LenmoTest```
+-  ```docker-compose  up --build``` 
 
-if open project for first time use "*docker-compose  up --build*" , if you use it before without change the code or
+if open project for first time use "*```docker-compose  up --build```*" , if you use it before without change the 
  setting of docker file
- or docker-compose you can just use "*docker-compose  up*" 
+ or docker-compose you can just use "*```docker-compose  up```*" 
+ 
+ ## after run project
+ -  open your browser and type [lenmo.loclhost](lenmo.loclhost)
+ - the project will open on swagger documentation of APIS
+ 
+ # Note 
+ ## You won't see anything API'S Until Authenticate who you are 
+ 
+ ## 10 type of user exist [BORROWER , INVESTOR ]
+ ## WHEN YOU LOGIN AS *BORROWER* YOU CAN USE ONLY API'S belong to *BORROWER* AND WHEN YOU LOGIN AS *INVESTOR* YOU CAN USE ONLY API'S belong to *INVESTOR*
+ 
+ 
+ 
+ 
+ 
+ 
+ ## use case
 
