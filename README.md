@@ -15,11 +15,14 @@ Check if the investor has sufficient balance in their account before they fund t
 6-Once all the payments are successfully paid to the investor, the loan status will be Completed 
 
 
-#*To run Project*
+# *To run Project*
 
-##First
+## First
 install Docker on your machine you can follow the steps [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
+
 ##Second 
+
+
 cd to folder of project 
 
 - cd LenmoTest
