@@ -109,8 +109,8 @@ class Loan(models.Model):
         db_table = 'Loan'
 
     id = models.BigAutoField(primary_key=True)
-    created_at = models.DateField(auto_created=True, default=now, blank=True)
-    updated_at = models.DateField(auto_now=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_created=True, default=now, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     amount = models.PositiveIntegerField(default=0, null=False, blank=True)
     period = models.PositiveIntegerField(default=0, null=False, blank=True)
     status = models.CharField(max_length=15, choices=LOAN_STATUS_LIST,
@@ -131,7 +131,7 @@ class LoanPayments(models.Model):
 
     id = models.BigAutoField(primary_key=True)
     amount = models.PositiveIntegerField(default=0, null=False, blank=True)
-    due_date = models.DateField(auto_created=True, default=now, blank=True)
+    due_date = models.DateTimeField(auto_created=True, default=now, blank=True)
     status = models.CharField(max_length=15, choices=PAYMENT_STATUS_LIST,
                               default=PAYMENT_STATUS_PAID)
     loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
@@ -139,7 +139,7 @@ class LoanPayments(models.Model):
 
 class Offer(models.Model):
     OFFER_STATUS_ACCEPTED = "ACCEPTED"
-    OFFER_STATUS_NOT_ACCEPTED = "NOT ACCEPTED"
+    OFFER_STATUS_NOT_ACCEPTED = "NOT ACCEPTED YET"
 
     OFFER_STATUS_LIST = ((OFFER_STATUS_ACCEPTED, OFFER_STATUS_ACCEPTED),
                          (OFFER_STATUS_NOT_ACCEPTED, OFFER_STATUS_NOT_ACCEPTED),
@@ -149,9 +149,12 @@ class Offer(models.Model):
         db_table = 'Offers'
 
     id = models.BigAutoField(primary_key=True)
-    created_at = models.DateField(auto_created=True, default=now, blank=True)
+    created_at = models.DateTimeField(auto_created=True, default=now, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
     loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
     interest_rate = models.PositiveIntegerField(default=0, null=False, blank=True)
 
-    status = models.CharField(max_length=15, choices=OFFER_STATUS_LIST,
+    status = models.CharField(max_length=25, choices=OFFER_STATUS_LIST,
                               default=OFFER_STATUS_NOT_ACCEPTED)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
