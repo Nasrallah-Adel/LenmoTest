@@ -1,12 +1,11 @@
 import datetime
-from calendar import month
 
-from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
 from LenmoTest.FINAL_VALUES import *
 from LenmoTest.serializers.loan_serializer import LoanSerializer
 from LenmoTest.serializers.offer_serializer import AcceptOfferSerializer
@@ -83,11 +82,11 @@ class AcceptOffer(AuthenticationMixin, UpdateAPIView):
 
     def make_LoanPayments(self, loan, offer):
 
-        daily_interest = (loan.amount + (loan.amount * (offer.interest_rate / 100.0))) / (loan.period * 30)
+        daily_interest = ((loan.amount * (offer.interest_rate / 100.0))) / (365)
         monthely_interest = daily_interest * 30
-        print(daily_interest)
-        print(monthely_interest)
-        amount = monthely_interest
+        all_interest = monthely_interest * loan.period
+
+        amount = (all_interest + loan.amount) / loan.period
         today = datetime.datetime.now()
 
         # today = today.strftime("%Y-%m-%d")
