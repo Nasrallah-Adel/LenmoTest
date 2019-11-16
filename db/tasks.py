@@ -13,7 +13,7 @@ logger = get_task_logger(__name__)
 # celery -A LenmoTest beat -l info
 
 @periodic_task(run_every=(crontab(minute='*/1')), name="payment_task", ignore_result=True)
-def payment_reminder_task():
+def payment_task():
     now = datetime.datetime.now()
     nowdelta = now + datetime.timedelta(days=2)
     now = now.strftime("%Y-%m-%d")
@@ -25,7 +25,7 @@ def payment_reminder_task():
               str(payment.loan.user.email) +
               " --  You must Make Sure you have enough Money in your balance to pay back the loan payment and it will be " +
               str(payment.amount))
-    payments = LoanPayments.objects.filter(due_date__exact=now, status=LoanPayments.PAYMENT_STATUS_NOT_PAID)
+    payments = LoanPayments.objects.filter(due_date__lte=now, status=LoanPayments.PAYMENT_STATUS_NOT_PAID)
     for payment in payments:
         if payment.loan.user.balance >= payment.amount:
             borrower = payment.loan.user
@@ -53,6 +53,11 @@ def payment_reminder_task():
                   " $ , and its value has been added to your account ")
             payment.status = LoanPayments.PAYMENT_STATUS_PAID
             payment.save()
+        else:
+            print("send email to borrower " +
+                  str(payment.loan.user.username) + " -- > " +
+                  str(payment.loan.user.email) + " " +
+                  "You do not have enough Money to pay your loan payment ")
     loans = Loan.objects.filter(status=Loan.LOAN_STATUS_FUNDED).values_list(
         'id')
     for loan in loans:
