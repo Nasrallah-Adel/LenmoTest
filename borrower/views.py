@@ -1,3 +1,6 @@
+import datetime
+from calendar import month
+
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -7,7 +10,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from LenmoTest.FINAL_VALUES import *
 from LenmoTest.serializers.loan_serializer import LoanSerializer
 from LenmoTest.serializers.offer_serializer import AcceptOfferSerializer
-from db.models import Loan, Offer, User, LenmonProfit
+from db.models import Loan, Offer, User, LenmonProfit, LoanPayments
 
 
 class AuthenticationMixin(object):
@@ -64,13 +67,32 @@ class AcceptOffer(AuthenticationMixin, UpdateAPIView):
             investor.save()
             borrower = User.objects.get(id=offer.loan.user.id)
             borrower.balance = borrower.balance + offer.loan.amount
-
+            loan = Loan.objects.get(id=offer.loan.id)
+            loan.status = Loan.LOAN_STATUS_FUNDED
+            loan.save()
             offer.status = Offer.OFFER_STATUS_ACCEPTED
             offer.save()
-            borrower.save()
 
+            borrower.save()
+            self.make_LoanPayments(loan, offer)
             LenmonProfit(offer=offer, loan=offer.loan, profit=LENMO_PROFIT).save()
 
             return Response(data={'message': 'offer Accepted  successfully'})
 
         return Response(data={'message': 'offer Not Accepted ,Not Belong to You'})
+
+    def make_LoanPayments(self, loan, offer):
+
+        daily_interest = (loan.amount + (loan.amount * (offer.interest_rate / 100.0))) / (loan.period * 30)
+        monthely_interest = daily_interest * 30
+        print(daily_interest)
+        print(monthely_interest)
+        amount = monthely_interest
+        today = datetime.datetime.now()
+
+        # today = today.strftime("%Y-%m-%d")
+        due_date = today + datetime.timedelta(days=30)
+
+        for i in range(loan.period):
+            LoanPayments(offer=offer, loan=loan, amount=amount, due_date=due_date).save()
+            due_date = due_date + datetime.timedelta(days=30)

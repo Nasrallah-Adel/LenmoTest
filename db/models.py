@@ -111,7 +111,7 @@ class Loan(models.Model):
     id = models.BigAutoField(primary_key=True)
     created_at = models.DateTimeField(auto_created=True, default=now, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-    amount = models.PositiveIntegerField(default=0, null=False, blank=True)
+    amount = models.FloatField(default=0, null=False, blank=True)
     period = models.PositiveIntegerField(default=0, null=False, blank=True)
     status = models.CharField(max_length=15, choices=LOAN_STATUS_LIST,
                               default=LOAN_STATUS_WAITING)
@@ -130,11 +130,12 @@ class LoanPayments(models.Model):
         db_table = 'LoanPayments'
 
     id = models.BigAutoField(primary_key=True)
-    amount = models.PositiveIntegerField(default=0, null=False, blank=True)
-    due_date = models.DateTimeField(auto_created=True, default=now, blank=True)
+    amount = models.FloatField(default=0, null=False, blank=True)
+    due_date = models.DateField(auto_created=True, default=now, blank=True)
     status = models.CharField(max_length=15, choices=PAYMENT_STATUS_LIST,
-                              default=PAYMENT_STATUS_PAID)
+                              default=PAYMENT_STATUS_NOT_PAID)
     loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
+    offer = models.ForeignKey('Offer', on_delete=models.CASCADE)
 
 
 class Offer(models.Model):
