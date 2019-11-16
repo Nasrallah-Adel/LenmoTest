@@ -1,6 +1,4 @@
 Django==2.2
-Pillow==6.0.0
-sorl-thumbnail==12.5.0
 psycopg2==2.8.1
 djangorestframework==3.9.2
 django-datatables-view==1.17.0

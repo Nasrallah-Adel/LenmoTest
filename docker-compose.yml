@@ -1,0 +1,89 @@
+version: '3.3'
+
+services:
+  db:
+    ports:
+      - 4444:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: lenmo
+      POSTGRES_PASSWORD: postgres
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - Lenmo_run:/run/
+      - ./nginx:/etc/nginx/conf.d
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+
+  lenmo_app:
+    environment:
+      PG_USER: postgres
+      PG_NAME: lenmo
+      PG_PASSWORD: postgres
+      PG_HOSTNAME: db
+      C_FORCE_ROOT: "true"
+      REDIS_HOSTNAME: redis
+    build: .
+    image: lenmo_app
+    entrypoint: /docker-entrypoint.sh
+
+    volumes:
+      - .:/opt/LenmoTest
+      - Lenmo_run:/run/
+    depends_on:
+      - db
+      - nginx
+
+  redis:
+    image: redis:latest
+
+  celery:
+    restart: unless-stopped
+    image: lenmo_app
+    environment:
+      PG_USER: postgres
+      PG_NAME: lenmo
+      PG_PASSWORD: postgres
+      PG_HOSTNAME: db
+      C_FORCE_ROOT: "true"
+      REDIS_HOSTNAME: redis
+    command: sh  -c "cd /opt/LenmoTest && celery -A LenmoTest worker -l info"
+    volumes:
+      - .:/opt/LenmoTest
+
+    depends_on:
+      - db
+      - redis
+      - lenmo_app
+  celery-beat:
+    restart: unless-stopped
+    image: lenmo_app
+    environment:
+      PG_USER: postgres
+      PG_NAME: lenmo
+      PG_PASSWORD: postgres
+      PG_HOSTNAME: db
+      C_FORCE_ROOT: "true"
+      REDIS_HOSTNAME: redis
+
+    command: sh  -c "find . -type f -name "celerybeat.pid" -exec rm -f {} \; && cd /opt/LenmoTest &&  celery -A LenmoTest beat -l info"
+    volumes:
+      - .:/opt/LenmoTest
+
+    depends_on:
+      - db
+      - redis
+      - lenmo_app
+volumes:
+  postgres_data:
+
+  Lenmo_run:

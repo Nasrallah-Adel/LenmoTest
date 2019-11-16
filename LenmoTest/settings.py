@@ -49,7 +49,7 @@ JWT_AUTH = {
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", 'localhost','lenmo.localhost']
 
 # Application definition
 
@@ -163,3 +163,5 @@ REDIS_HOSTNAME = os.environ.get("REDIS_HOSTNAME", "127.0.0.1")
 CELERY_BROKER_URL = f"redis://{REDIS_HOSTNAME}:6379/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOSTNAME}:6379/0"
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+
+ADMINS = ({"email": "lenmo@test.com", "password": "aA111111"},)
