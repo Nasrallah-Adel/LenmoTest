@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
-from db.models import Offer
+from db.models import Offer, Loan
 
 
 class OfferSerializer(serializers.ModelSerializer):

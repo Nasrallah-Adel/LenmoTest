@@ -46,6 +46,11 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class LoanRequestList(AuthenticationMixin, ListAPIView):
+    """
+    get your loans list and it is support pagination every page contain 20 item
+    \n
+    item will content of loan properties and offers of every loan
+    """
     serializer_class = LoanSerializer
     pagination_class = StandardResultsSetPagination
     authentication_classes = (JSONWebTokenAuthentication,)
@@ -57,6 +62,11 @@ class LoanRequestList(AuthenticationMixin, ListAPIView):
 
 
 class AcceptOffer(AuthenticationMixin, UpdateAPIView):
+    """
+    one field \n
+    offer_id : you can get it from "LoanRequestList"
+
+    """
     serializer_class = AcceptOfferSerializer
     queryset = Offer.objects.all()
 
@@ -113,6 +123,11 @@ class AcceptOffer(AuthenticationMixin, UpdateAPIView):
 
 
 class DepositMoney(AuthenticationMixin, UpdateAPIView):
+    """
+    one field \n
+    balance : to add balance to your account
+
+    """
     serializer_class = UserBalanceSerializer
     queryset = User.objects.all()
 

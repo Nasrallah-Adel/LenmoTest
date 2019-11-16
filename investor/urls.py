@@ -9,5 +9,8 @@ schema_view = get_swagger_view(title='investor')
 urlpatterns = [
     path('creat_offer/', OfferCreate.as_view()),
     path('deposit_money/', DepositMoney.as_view()),
+    path('loans/', LoanList.as_view()),
+    path('offers/', OfferList.as_view()),
+
 
 ]
