@@ -63,17 +63,25 @@ class Register(CreateAPIView):
         data = {'object': UserSerializer(user, context={"request": request}).data, 'token': token}
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
+
 class DepositMoney(AuthenticationMixin, UpdateAPIView):
     serializer_class = UserBalanceSerializer
     queryset = User.objects.all()
-    lookup_field = 'balance'
 
     def put(self, request, *args, **kwargs):
         return self.patch(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
         amount = request.data['balance']
-        user = User.objects.get(id=request.user.id)
-        user.balance = user.balance + int(amount)
-        user.save()
+        try:
+            user = User.objects.get(id=request.user.id)
+        except Exception as e:
+            return Response(data={'message': 'user not exist  ' + str(e)})
+        try:
+            user.balance = user.balance + int(amount)
+            user.save()
+        except Exception as e:
+            print(e)
+            return Response(data={'message': ' error :  ' + str(e)})
+
         return Response(data={'message': 'Your New Balance Is ' + str(user.balance)})

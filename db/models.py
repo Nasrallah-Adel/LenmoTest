@@ -158,3 +158,16 @@ class Offer(models.Model):
     status = models.CharField(max_length=25, choices=OFFER_STATUS_LIST,
                               default=OFFER_STATUS_NOT_ACCEPTED)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
+
+
+class LenmonProfit(models.Model):
+    class Meta:
+        db_table = 'LenmonProfit'
+
+    id = models.BigAutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_created=True, default=now, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    loan = models.ForeignKey('Loan', on_delete=models.CASCADE)
+    offer = models.ForeignKey('Offer', on_delete=models.CASCADE)
+    profit = models.PositiveIntegerField(default=0, null=False, blank=True)

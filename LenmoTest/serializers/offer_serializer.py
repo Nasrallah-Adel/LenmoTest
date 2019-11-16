@@ -10,8 +10,8 @@ class OfferSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'status', 'user')
 
 
-class AcceptOfferSerializer(serializers.ModelSerializer):
+class AcceptOfferSerializer(serializers.Serializer):
+    offer_id = serializers.IntegerField(required=True)
+
     class Meta:
-        model = Offer
-        fields = ('id', 'interest_rate', 'loan', 'status', 'user')
-        read_only_fields = ('status', 'interest_rate', 'loan', 'user')
+        fields = ('offer_id',)

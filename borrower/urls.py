@@ -10,7 +10,7 @@ app_name = 'borrower'
 urlpatterns = [
     path('loan_request/', LoanRequestCreate.as_view()),
     path('my_loans/', LoanRequestList.as_view()),
-    path('accept_offer/<int:id>', AcceptOffer.as_view()),
+    path('accept_offer/', AcceptOffer.as_view()),
     path('deposit_money/', DepositMoney.as_view()),
 
 ]
