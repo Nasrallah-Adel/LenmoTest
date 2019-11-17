@@ -91,6 +91,14 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
 ![first](documentation/13.png)
 
 
+# finally open API'S links and test it 
+- like this
+
+![first](documentation/14.png)
+![first](documentation/15.png)
+
+
+
 
 
 
