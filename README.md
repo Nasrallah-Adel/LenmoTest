@@ -33,7 +33,7 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
  or docker-compose you can just use "*```docker-compose  up```*" 
  
  ## after run project
- -  open your browser and type [lenmo.loclhost](lenmo.loclhost)
+ -  open your browser and type [lenmo.localhost](lenmo.localhost)
  - the project will open on swagger documentation of APIS
  
  # Note  1
