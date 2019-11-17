@@ -101,6 +101,52 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
 ![first](documentation/15.png)
 
 
+# Apply Use Case
+- first the *BORROWER* make the loan request
+
+![first](documentation/16.png)
+![first](documentation/17.png)
+
+- the investor can only get all loan requests just loan amount and period and the user request the loan 
+
+![first](documentation/18.png)
+![first](documentation/19.png)
+
+- investor can creat offer to loan request by take loan request id from the loans url api and enter the interest rate
+
+![first](documentation/20.png)
+![first](documentation/21.png)
+
+- borrower can expand all loan requests if any investor create offer to his loan he can saw it 
+
+![first](documentation/22.png)
+![first](documentation/23.png)
+
+- if borrower need to accept offer take the offer id from my_loans url and accept offer
+
+![first](documentation/24.png)
+![first](documentation/25.png)
+
+- after accept the status of loan changed and create the loan payments and change the offer status
+![first](documentation/26.png)
+![first](documentation/27.png)
+![first](documentation/28.png)
+![first](documentation/30.png)
+![first](documentation/31.png)
+
+- if borrower or investor need to deposit money 
+![first](documentation/32.png)
+![first](documentation/33.png)
+
+
+
+
+
+
+
+
+
+
 
 
 
