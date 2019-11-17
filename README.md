@@ -36,8 +36,11 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
  -  open your browser and type [lenmo.loclhost](lenmo.loclhost)
  - the project will open on swagger documentation of APIS
  
- # Note 
+ # Note  1
  ## You won't see anything of API'S Until Authenticate who you are 
+ 
+ # Note  2
+ ## CELERY task run in background and print messages like send email to user just simulate the situation 
  
  ## 10 type of user exist [BORROWER , INVESTOR ]
  ## when yo login as  *BORROWER* you can use only API'S belong to  *BORROWER* and  when yo login as *INVESTOR* you can use only API'S belong to *INVESTOR*
