@@ -37,15 +37,69 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
  - the project will open on swagger documentation of APIS
  
  # Note 
- ## You won't see anything API'S Until Authenticate who you are 
+ ## You won't see anything of API'S Until Authenticate who you are 
  
  ## 10 type of user exist [BORROWER , INVESTOR ]
- ## WHEN YOU LOGIN AS *BORROWER* YOU CAN USE ONLY API'S belong to *BORROWER* AND WHEN YOU LOGIN AS *INVESTOR* YOU CAN USE ONLY API'S belong to *INVESTOR*
+ ## when yo login as  *BORROWER* you can use only API'S belong to  *BORROWER* and  when yo login as *INVESTOR* you can use only API'S belong to *INVESTOR*
  
+
+ # use case
+ #### first you need make two account one as *borrower* and second as investor 
  
+ - open your browser  after run docker-compose and type [lenmo.localhost](lenmo.localhost)
  
+ ![first](documentation/1.png)
  
+ -  make BORROWER account from register
  
- 
- ## use case
+![first](documentation/2.png)
+![first](documentation/3.png)
+- after register save token of user to use it or you can get it by email and password from api-token link
+![first](documentation/6.png)
+![first](documentation/7.png)
+
+-  make INVESTOR account from register
+![first](documentation/4.png)
+![first](documentation/5.png)
+- after register save token of user to use it or you can get it by email and password from api-token link
+![first](documentation/12.png)
+![first](documentation/7.png)
+
+-  use authorize button to authorize your self and use api's
+
+- we use JWT authentication 
+![first](documentation/8.png)
+- use your token like this
+```JWT eyJ0eXAiOiJKV1QiLCJhbGciOi```
+- and click on authorize button
+![first](documentation/9.png)
+
+- you will find API's appear for BORROWER
+![first](documentation/10.png)
+![first](documentation/11.png)
+
+-use rhe same steps for INVESTOR get INVESTOR token and authorize by it and you will find INVESTOR APIS
+
+![first](documentation/12.png)
+
+![first](documentation/7.png)
+
+![first](documentation/8.png)
+
+![first](documentation/9.png)
+
+![first](documentation/13.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
