@@ -138,6 +138,17 @@ if open project for first time use "*```docker-compose  up --build```*" , if you
 ![first](documentation/32.png)
 ![first](documentation/33.png)
 
+# NOTE 
+## - table in database (lenmonprofit) save 3$ from any offer accepted and save loan and related offer to it 
+
+# Celery Jobs
+
+1. remind borrower with loan payment before two days of loan payment due date and ask user to check balance to pay
+ loan payment
+2. if today the loan payment due date or any other old loan payment ( take balance from borrower and add to balance
+ of investor)
+3. finally check if all payment of loan paid mark loan as completed
+
 
 
 
