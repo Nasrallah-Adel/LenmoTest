@@ -12,7 +12,7 @@ logger = get_task_logger(__name__)
 # celery -A LenmoTest worker -l info -B
 # celery -A LenmoTest beat -l info
 
-@periodic_task(run_every=(crontab(hour="*/24")), name="payment_task", ignore_result=True)
+@periodic_task(run_every=(crontab(day_of_month='*/1', hour=0, minute=0)), name="payment_task", ignore_result=True)
 def payment_task():
     now = datetime.datetime.now()
     nowdelta = now + datetime.timedelta(days=2)
