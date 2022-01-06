@@ -7,6 +7,6 @@ django-rest-passwordreset==1.0.0
 djangorestframework-jwt==1.11.0
 httplib2==0.13.1
 django-filter==2.2.0
-Celery==4.3.0
+Celery==5.2.2
 gunicorn==19.9.0
 redis==3.3.8
